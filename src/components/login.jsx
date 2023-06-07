@@ -1,11 +1,14 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Logo from "../assets/Driven-logo.svg";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import CustomAlert from "./alert";
+import UserContext from "./usercontext.js";
 
 export default function Login() {
+    const { setUserData } = useContext(UserContext);
+
     const [userEmail, setEmail] = useState("");
     const [userPassword, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
@@ -28,18 +31,37 @@ export default function Login() {
         return emailRegex.test(email);
     }
 
+    useEffect(() => {
+        const localData = localStorage.getItem("loginData");
+        if (localData) {
+            const { savedEmail, savedPassword } = JSON.parse(localData);
+            if (savedEmail !== "" && savedPassword !== "") {
+                setEmail(savedEmail);
+                setPassword(savedPassword);
+                setLoading(true);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (loading) {
+            sendLogin();
+        }
+    }, [loading]);
+
     function sendLogin() {
         if (userEmail === "" || userPassword === "") {
             setAlert("Preencha todos os dados para prosseguir.");
             setShowAlert(true);
+            setLoading(false);
             return;
         }
         if (!validateEmail(userEmail)) {
             setAlert("Insira um endereço de e-mail válido.");
             setShowAlert(true);
+            setLoading(false);
             return;
         }
-        setLoading(true);
         loginObj.email = userEmail;
         loginObj.password = userPassword;
         console.log(loginObj);
@@ -49,16 +71,32 @@ export default function Login() {
         );
         promise
             .then((res) => {
-                console.log(res.data);
-                setLoading(false);
+                const r = res.data;
+                console.log(r);
+                setUserData({
+                    userId: r.id,
+                    userName: r.name,
+                    userToken: r.token,
+                    userSub: r.membership,
+                });
+                const loginData = {
+                    savedEmail: r.email,
+                    savedPassword: r.password,
+                };
+                localStorage.setItem("loginData", JSON.stringify(loginData));
+
+                if (r.membership == null) {
+                    navigate("/subscriptions");
+                }
             })
             .catch((err) => {
-                setLoading(false);
                 console.log(err);
                 setAlert(`Erro ${err.response.status}`);
                 setShowAlert(true);
+            })
+            .finally(() => {
+                setLoading(false);
             });
-        setLoading(false);
     }
 
     return (
@@ -81,7 +119,7 @@ export default function Login() {
                     onChange={(event) => setPassword(event.target.value)}
                     disabled={loading}
                 />
-                <button onClick={sendLogin} disabled={loading}>
+                <button onClick={() => setLoading(true)} disabled={loading}>
                     {loading ? `...` : `ENTRAR`}
                 </button>
                 <Link to={`/sign-up`} className="logintext">

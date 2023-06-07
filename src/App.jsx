@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import Home from "./pages/home";
-import SignUp from "./pages/signup";
-import Subscriptions from "./pages/subscriptions";
-import Login from "./pages/login";
+import Home from "./components/home";
+import SignUp from "./components/signup";
+import Subscriptions from "./components/subscriptions";
+import Login from "./components/login";
 
 function App() {
     return (

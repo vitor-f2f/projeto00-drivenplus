@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import CustomAlert from "./alert";
 
 export default function SignUp() {
     const [loading, setLoading] = useState(false);
@@ -20,6 +21,9 @@ export default function SignUp() {
 
     const [alertMsg, setAlert] = useState("");
     const [showAlert, setShowAlert] = useState(false);
+    const closeAlert = () => {
+        setShowAlert(false);
+    };
 
     function formatCpf(value) {
         let cpf = value.replace(/\D/g, "").slice(0, 11);
@@ -104,19 +108,6 @@ export default function SignUp() {
         setLoading(false);
     }
 
-    const CustomAlert = ({ message, onClose }) => (
-        <AlertContainer>
-            <AlertBox>
-                <span>{message}</span>
-                <button onClick={onClose}>OK</button>
-            </AlertBox>
-        </AlertContainer>
-    );
-
-    const closeAlert = () => {
-        setShowAlert(false);
-    };
-
     return (
         <SignupContainer>
             <SignupForm>
@@ -190,38 +181,4 @@ const SignupForm = styled.div`
     flex-direction: column;
     width: 300px;
     gap: 16px;
-`;
-
-const AlertContainer = styled.div`
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-`;
-
-const AlertBox = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: "Roboto";
-    font-size: 20px;
-    background-color: white;
-    border-radius: 8px;
-    padding: 12px;
-    width: 300px;
-    button {
-        margin-top: 8px;
-        padding-top: 4px;
-        justify-content: center;
-        align-items: center;
-        width: 15%;
-        height: 28px;
-    }
 `;

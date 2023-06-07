@@ -17,6 +17,11 @@ const GlobalStyle = createGlobalStyle`
         font-weight: 400;
         font-family: 'Roboto';
     }
+    body {
+        display: flex;
+        justify-content: center;
+        
+    }
     input {
         height: 52px;
         border-radius: 8px;
@@ -25,6 +30,9 @@ const GlobalStyle = createGlobalStyle`
         background-color: white;
     }
     button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         border-radius: 8px;
         border: none;
         height: 52px;

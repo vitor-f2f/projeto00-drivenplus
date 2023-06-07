@@ -5,6 +5,8 @@ import axios from "axios";
 import UserContext from "./usercontext";
 import CustomAlert from "./alert";
 import CloseIcon from "../assets/fa-solid_window-close.png";
+import CashIcon from "../assets/moneybill.svg";
+import ClipboardIcon from "../assets/clipboard.svg";
 
 export default function SubscriptionDetails() {
     const { userData, setUserData } = useContext(UserContext);
@@ -176,6 +178,12 @@ export default function SubscriptionDetails() {
         setLoading(false);
     }
 
+    function formatPrice(p) {
+        const stringP = p.toString();
+        const formatted = stringP.replace(".", ",");
+        return formatted;
+    }
+
     return (
         <SubContainer>
             <BackButton onClick={clickBack}>
@@ -183,7 +191,7 @@ export default function SubscriptionDetails() {
             </BackButton>
             {planLogo ? (
                 <div>
-                    <img src={planLogo} />
+                    <img src={planLogo} className="logo" />
                     <p>Driven Plus</p>
                 </div>
             ) : (
@@ -191,7 +199,10 @@ export default function SubscriptionDetails() {
             )}
             <PlanDetails>
                 <Perks>
-                    Benefícios
+                    <span>
+                        <img src={ClipboardIcon} alt="" />
+                        Benefícios:
+                    </span>
                     {perksArr && perksArr.length > 0
                         ? perksArr.map((p, index) => (
                               <p key={p.id}>
@@ -201,8 +212,11 @@ export default function SubscriptionDetails() {
                         : `...`}
                 </Perks>
                 <Price>
-                    Preco:
-                    <p>{`R$ ${price} cobrados mensalmente`}</p>
+                    <span>
+                        <img src={CashIcon} alt="" />
+                        Preço:
+                    </span>
+                    <p>{`R$ ${formatPrice(price)} cobrados mensalmente`}</p>
                 </Price>
             </PlanDetails>
             <Payment>
@@ -246,6 +260,12 @@ export default function SubscriptionDetails() {
             </Payment>
             {showConfirmation && (
                 <ConfirmContainer>
+                    <img
+                        src={CloseIcon}
+                        alt="close"
+                        className="close-icon"
+                        onClick={cancelPayment}
+                    />
                     <ConfirmBox>
                         <p className="message">
                             Tem certeza que deseja
@@ -287,7 +307,7 @@ const SubContainer = styled.div`
     height: 100vh;
     width: 100%;
     text-align: left;
-    img {
+    img.logo {
         width: 140px;
         margin-right: 24px;
     }
@@ -302,24 +322,30 @@ const PlanDetails = styled.div`
     flex-direction: column;
     width: 100%;
     gap: 12px;
+    span img {
+        vertical-align: middle;
+        max-height: 15px;
+        max-width: 15px;
+        margin-right: 5px;
+        margin-bottom: 4px;
+    }
+    p {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 16px;
+    }
 `;
 const Perks = styled.div`
     width: 100%;
+    font-weight: 400;
     font-size: 16px;
-    p {
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 17px;
-    }
+    line-height: 19px;
 `;
 const Price = styled.div`
     width: 100%;
+    font-weight: 400;
     font-size: 16px;
-    p {
-        font-size: 14px;
-        line-height: 17px;
-        font-weight: 400;
-    }
+    line-height: 19px;
 `;
 const Payment = styled.div`
     display: flex;
@@ -336,8 +362,8 @@ const SmallInput = styled.div`
 `;
 const BackButton = styled.div`
     position: fixed;
-    top: 10px;
-    left: 10px;
+    top: 15px;
+    left: 15px;
     z-index: 2;
     font-size: 40px;
 `;
@@ -352,9 +378,16 @@ const ConfirmContainer = styled.div`
     align-items: center;
     justify-content: center;
     z-index: 10;
+    .close-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 28px;
+    }
 `;
 
 const ConfirmBox = styled.div`
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;

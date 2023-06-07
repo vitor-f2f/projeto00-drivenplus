@@ -43,6 +43,12 @@ export default function Subscriptions() {
         navigate(`/subscriptions/${id}`, { state: { id } });
     }
 
+    function formatPrice(p) {
+        const stringP = p.toString();
+        const formatted = stringP.replace(".", ",");
+        return formatted;
+    }
+
     return (
         <SubscriptionsContainer>
             <span>Escolha seu Plano</span>
@@ -50,7 +56,7 @@ export default function Subscriptions() {
                 ? plansList.map((s) => (
                       <SubType key={s.id} onClick={() => clickSub(s.id)}>
                           <img src={s.image} />
-                          <SubPrice>R$ {s.price}</SubPrice>
+                          <SubPrice>R$ {formatPrice(s.price)}</SubPrice>
                       </SubType>
                   ))
                 : `...`}
@@ -67,7 +73,9 @@ const SubscriptionsContainer = styled.div`
     padding: 29px 42px 0;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    flex: 1;
+    width: 100vw;
+    max-width: 412px;
     align-items: center;
     font-weight: 700;
     text-align: center;
@@ -75,8 +83,6 @@ const SubscriptionsContainer = styled.div`
     font-family: "Roboto";
     color: white;
     gap: 10px;
-    span {
-    }
 `;
 
 const SubType = styled.div`

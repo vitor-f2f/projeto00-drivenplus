@@ -139,6 +139,7 @@ const LoginContainer = styled.div`
     padding: 0 38px;
     display: flex;
     flex-direction: column;
+    max-width: 412px;
     width: 100%;
     justify-content: center;
     align-items: center;

@@ -56,7 +56,12 @@ export default function Home() {
             <PerksList>
                 {data.perks && data.perks.length > 0
                     ? data.perks.map((p) => (
-                          <button key={p.id}>{p.title}</button>
+                          <button
+                              key={p.id}
+                              onClick={() => window.open(p.link, "_blank")}
+                          >
+                              {p.title}
+                          </button>
                       ))
                     : `...`}
             </PerksList>
@@ -107,7 +112,8 @@ const HomeContainer = styled.div`
     padding: 32px 38px 0;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 100vw;
+    max-width: 412px;
     align-items: center;
     font-weight: 700;
     text-align: center;

@@ -88,7 +88,9 @@ export default function Login() {
                 if (r.membership == null) {
                     navigate("/subscriptions");
                 } else {
-                    navigate("/home");
+                    navigate("/home", {
+                        state: { name: r.name, membership: r.membership },
+                    });
                 }
             })
             .catch((err) => {

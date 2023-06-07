@@ -252,7 +252,7 @@ export default function SubscriptionDetails() {
                             <br />
                             assinar o plano
                             <br />
-                            Driven Plus (R$ {price})
+                            Driven Plus (R$ {price})?
                         </p>
                         <div className="button-container">
                             <button className="no" onClick={cancelPayment}>

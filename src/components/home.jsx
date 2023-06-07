@@ -1,11 +1,22 @@
 import styled from "styled-components";
-import React, { useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UserContext from "./usercontext";
+import CustomAlert from "./alert";
+import axios from "axios";
 
 export default function Home() {
-    const location = useLocation();
     const { userData } = useContext(UserContext);
+    const tokenObj = {
+        headers: { Authorization: `Bearer ${userData.userToken}` },
+    };
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [alertMsg, setAlert] = useState("");
+    const [showAlert, setShowAlert] = useState(false);
+    const closeAlert = () => {
+        setShowAlert(false);
+    };
+
     const data = userData.membership;
     const userName = userData.userName;
 
@@ -17,7 +28,21 @@ export default function Home() {
         navigate("/subscriptions");
     }
 
-    function cancelMyPlansJustInCaseYouCalled() {}
+    function cancelMyPlansJustInCaseYouCalled() {
+        const promise = axios.delete(
+            "https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions",
+            tokenObj
+        );
+        promise
+            .then(() => {
+                navigate("/subscriptions");
+            })
+            .catch((err) => {
+                console.log(err);
+                setAlert(`Erro ${err.response.status}`);
+                setShowAlert(true);
+            });
+    }
 
     return (
         <HomeContainer>
@@ -39,11 +64,39 @@ export default function Home() {
                 <button onClick={timesChange}>Mudar plano</button>
                 <button
                     className="red"
-                    onClick={cancelMyPlansJustInCaseYouCalled}
+                    onClick={() => setShowConfirmation(true)}
                 >
                     Cancelar plano
                 </button>
             </Footer>
+            {showConfirmation && (
+                <ConfirmContainer>
+                    <ConfirmBox>
+                        <p className="message">
+                            Tem certeza que deseja
+                            <br />
+                            cancelar seu plano atual?
+                        </p>
+                        <div className="button-container">
+                            <button
+                                className="no"
+                                onClick={() => setShowConfirmation(false)}
+                            >
+                                Não
+                            </button>
+                            <button
+                                className="yes"
+                                onClick={cancelMyPlansJustInCaseYouCalled}
+                            >
+                                SIM
+                            </button>
+                        </div>
+                    </ConfirmBox>
+                </ConfirmContainer>
+            )}
+            {showAlert && (
+                <CustomAlert message={alertMsg} onClose={closeAlert} />
+            )}
         </HomeContainer>
     );
 }
@@ -105,5 +158,63 @@ const Footer = styled.div`
     gap: 8px;
     button.red {
         background-color: #ff4747;
+    }
+`;
+
+const ConfirmContainer = styled.div`
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+`;
+
+const ConfirmBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: "Roboto";
+    font-size: 20px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 12px;
+    width: 248px;
+    text-align: center;
+
+    .message {
+        padding: 30px 0;
+        background-color: white;
+        color: #0e0e13;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 21px;
+        margin-bottom: 16px;
+    }
+
+    .button-container {
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+        width: 100%;
+    }
+
+    .button-container button {
+        flex: 0 0 42%;
+        height: 52px;
+    }
+
+    .button-container button.no {
+        background-color: #cecece;
+        font-weight: 400;
+    }
+    .button-container button.yes {
+        font-weight: 700;
     }
 `;

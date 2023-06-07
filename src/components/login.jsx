@@ -77,20 +77,17 @@ export default function Login() {
                     userId: r.id,
                     userName: r.name,
                     userToken: r.token,
-                    userSub: r.membership,
+                    membership: r.membership,
                 });
                 const loginData = {
                     savedEmail: r.email,
                     savedPassword: r.password,
                 };
                 localStorage.setItem("loginData", JSON.stringify(loginData));
-
                 if (r.membership == null) {
                     navigate("/subscriptions");
                 } else {
-                    navigate("/home", {
-                        state: { name: r.name, membership: r.membership },
-                    });
+                    navigate("/home");
                 }
             })
             .catch((err) => {

@@ -7,7 +7,7 @@ import CustomAlert from "./alert";
 import CloseIcon from "../assets/fa-solid_window-close.png";
 
 export default function SubscriptionDetails() {
-    const { userData } = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
     const tokenObj = {
         headers: { Authorization: `Bearer ${userData.userToken}` },
     };
@@ -125,7 +125,7 @@ export default function SubscriptionDetails() {
         }
         const month = parseInt(expDate.slice(0, 2));
         const year = parseInt(expDate.slice(3));
-        if (month > 12 || month < 1 || year > 31 || year < 1) {
+        if (month > 12 || month < 1 || year < 23) {
             setAlert("Data de validade inválida.");
             setShowAlert(true);
             return;
@@ -162,9 +162,9 @@ export default function SubscriptionDetails() {
             tokenObj
         );
         promise
-            .then((res) => {
-                console.log(res.data);
-                setLoading(false);
+            .then((r) => {
+                console.log(r.data);
+                setUserData({ ...userData, membership: r.data.membership });
                 navigate("/home");
             })
             .catch((err) => {

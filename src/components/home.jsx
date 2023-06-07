@@ -1,12 +1,24 @@
 import styled from "styled-components";
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import UserContext from "./usercontext";
 
 export default function Home() {
     const location = useLocation();
-    const userName = location.state?.name;
-    const data = location.state?.membership;
+    const { userData } = useContext(UserContext);
+    const data = userData.membership;
+    const userName = userData.userName;
+
     console.log("dado recebido", userName, data);
+
+    const navigate = useNavigate();
+
+    function timesChange() {
+        navigate("/subscriptions");
+    }
+
+    function cancelMyPlansJustInCaseYouCalled() {}
+
     return (
         <HomeContainer>
             <Header>
@@ -23,6 +35,15 @@ export default function Home() {
                       ))
                     : `...`}
             </PerksList>
+            <Footer>
+                <button onClick={timesChange}>Mudar plano</button>
+                <button
+                    className="red"
+                    onClick={cancelMyPlansJustInCaseYouCalled}
+                >
+                    Cancelar plano
+                </button>
+            </Footer>
         </HomeContainer>
     );
 }
@@ -37,10 +58,11 @@ const HomeContainer = styled.div`
     align-items: center;
     font-weight: 700;
     text-align: center;
-    height: 100vh;
+    min-height: 100vh;
     font-family: "Roboto";
     color: white;
     gap: 10px;
+    position: relative;
     span {
         padding-bottom: 50px;
     }
@@ -68,5 +90,20 @@ const IconContainer = styled.div`
     top: -16px;
     ion-icon {
         font-size: 44px;
+    }
+`;
+
+const Footer = styled.div`
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 12px;
+    padding: 0 38px;
+    display: flex;
+    flex-direction: column;
+    justify-self: baseline;
+    width: 100%;
+    gap: 8px;
+    button.red {
+        background-color: #ff4747;
     }
 `;

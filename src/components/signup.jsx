@@ -70,7 +70,7 @@ export default function SignUp() {
 
     function sendSignup() {
         if (
-            signupCpf === "" ||
+            signupCpf.length < 14 ||
             signupEmail === "" ||
             signupName === "" ||
             signupPassword === ""

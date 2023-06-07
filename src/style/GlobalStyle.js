@@ -4,6 +4,7 @@ const GlobalStyle = createGlobalStyle`
     * {
         box-sizing: border-box;
         font-family: 'Roboto';
+        background-color: #0e0e13;
     }
     a:visited { text-decoration: none; }
     a:hover { text-decoration: none; }
@@ -21,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
         border-radius: 8px;
         padding-left: 14px;
         border: none;
+        background-color: white;
     }
     button {
         border-radius: 8px;

@@ -4,6 +4,7 @@ import Home from "./components/home";
 import SignUp from "./components/signup";
 import Subscriptions from "./components/subscriptions";
 import Login from "./components/login";
+import SubscriptionDetails from "./components/subpage";
 import UserContext from "./components/usercontext";
 
 function App() {
@@ -19,6 +20,10 @@ function App() {
                     <Route
                         path="/subscriptions"
                         element={<Subscriptions />}
+                    ></Route>
+                    <Route
+                        path="/subscriptions/:id"
+                        element={<SubscriptionDetails />}
                     ></Route>
                 </Routes>
             </BrowserRouter>

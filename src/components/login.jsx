@@ -87,6 +87,8 @@ export default function Login() {
 
                 if (r.membership == null) {
                     navigate("/subscriptions");
+                } else {
+                    navigate("/home");
                 }
             })
             .catch((err) => {
@@ -104,7 +106,6 @@ export default function Login() {
             <img src={Logo} />
             <LoginForm>
                 <input
-                    data-test="email-input"
                     type="text"
                     placeholder="E-mail"
                     value={userEmail}
@@ -112,7 +113,6 @@ export default function Login() {
                     disabled={loading}
                 />
                 <input
-                    data-test="password-input"
                     type="password"
                     placeholder="Senha"
                     value={userPassword}
@@ -137,15 +137,12 @@ const LoginContainer = styled.div`
     img {
         width: 300px;
     }
-    background-color: #0e0e13;
-    font-size: 30px;
     padding: 0 38px;
     display: flex;
     flex-direction: column;
     width: 100%;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
     text-align: center;
     height: 100vh;
 `;

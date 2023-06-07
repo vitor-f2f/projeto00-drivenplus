@@ -20,11 +20,18 @@ const AlertBox = styled.div`
     align-items: center;
     justify-content: center;
     font-family: "Roboto";
-    font-size: 20px;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
     background-color: white;
     border-radius: 8px;
     padding: 12px;
     width: 300px;
+    span {
+        background-color: white;
+        color: #0e0e13;
+    }
     button {
         margin-top: 8px;
         padding-top: 4px;
